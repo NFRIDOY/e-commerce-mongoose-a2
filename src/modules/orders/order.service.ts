@@ -9,6 +9,12 @@ const getAllOrder = async () => {
     const result = await Order.find();
     return result;
 };
+const getSearchOrderByEmail = async (email: string) => {
+    // const regex = new RegExp(email, "i");
+    // const result = await Order.find({ email: { $regex: regex } });
+    const result = await Order.find({ email: email });
+    return result;
+};
 // const getAllProducts = async () => {
 //     const result = await Product.find();
 //     return result;
@@ -38,7 +44,8 @@ const getAllOrder = async () => {
 
 export const OrderServices = {
     createOrder,
-    getAllOrder
+    getAllOrder,
+    getSearchOrderByEmail,
     // getAllProducts,
     // getProductById,
     // updateProductById,

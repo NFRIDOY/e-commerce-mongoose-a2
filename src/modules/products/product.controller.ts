@@ -40,7 +40,7 @@ const getAllProducts = async (req: Request, res: Response) => {
         }
 
         console.log(result)
-        if (!result) {
+        if (!result || result.length === 0) {
             return res.json({
                 success: false,
                 message: "No products found!",

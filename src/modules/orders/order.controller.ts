@@ -29,10 +29,17 @@ const createOrder = async (req: Request, res: Response) => {
 // O2
 const getAllOrder = async (req: Request, res: Response) => {
     try {
-        const result = await OrderServices.getAllOrder();
+        const search = req.query.email as string;
+        // console.log(search);
 
-        // console.log(result)
-        if (!result) {
+        let result;
+        if (search) {
+            result = await OrderServices.getSearchOrderByEmail(search);
+        } else {
+            result = await OrderServices.getAllOrder();
+        }
+        console.log(result);
+        if (!result || result.length === 0) {
             return res.json({
                 success: false,
                 message: "No order found",
@@ -43,7 +50,7 @@ const getAllOrder = async (req: Request, res: Response) => {
         // // Here result is the inserted document
         res.json({
             success: true,
-            message: "Orders fetched successfully!",
+            message: "Orders fetched successfully for user email!",
             data: result,
         });
     } catch (error) {
@@ -162,7 +169,7 @@ const getAllOrder = async (req: Request, res: Response) => {
 
 export const OrderControllers = {
     createOrder,
-    getAllOrder
+    getAllOrder,
     // getProductById,
     // updateProductById,
     // deleteProductById,

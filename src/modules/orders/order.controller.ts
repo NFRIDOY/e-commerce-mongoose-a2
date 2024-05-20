@@ -29,22 +29,21 @@ const createOrder = async (req: Request, res: Response) => {
 // O2
 const getAllOrder = async (req: Request, res: Response) => {
     try {
-        const OrderData = req.body;
-        const result = await OrderServices.createOrder(OrderData);
+        const result = await OrderServices.getAllOrder();
 
         // console.log(result)
         if (!result) {
             return res.json({
                 success: false,
-                message: "Order is not created!",
-                data: result,
+                message: "No order found",
+                data: [],
             });
         }
         // // data is sending as response from the database to the frontend.
         // // Here result is the inserted document
         res.json({
             success: true,
-            message: "Order created successfully!",
+            message: "Orders fetched successfully!",
             data: result,
         });
     } catch (error) {
@@ -163,7 +162,7 @@ const getAllOrder = async (req: Request, res: Response) => {
 
 export const OrderControllers = {
     createOrder,
-    // getAllProducts,
+    getAllOrder
     // getProductById,
     // updateProductById,
     // deleteProductById,

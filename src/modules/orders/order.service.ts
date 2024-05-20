@@ -5,6 +5,10 @@ const createOrder = async (payload: TOrder) => {
     const result = await Order.create(payload);
     return result;
 };
+const getAllOrder = async () => {
+    const result = await Order.find();
+    return result;
+};
 // const getAllProducts = async () => {
 //     const result = await Product.find();
 //     return result;
@@ -34,6 +38,7 @@ const createOrder = async (payload: TOrder) => {
 
 export const OrderServices = {
     createOrder,
+    getAllOrder
     // getAllProducts,
     // getProductById,
     // updateProductById,

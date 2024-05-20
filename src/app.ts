@@ -1,5 +1,4 @@
 import express, { Request, Response } from "express";
-// import { MovieRoutes } from "./modules/movies/movie.route";
 const app = express();
 
 //parsers

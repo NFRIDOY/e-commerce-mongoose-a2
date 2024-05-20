@@ -1,62 +1,135 @@
 import { Request, Response } from "express";
 import { ProductServices } from "./product.service";
 
+//1
 const createProduct = async (req: Request, res: Response) => {
-    const productData = req.body;
-    const result = await ProductServices.createProduct(productData);
+    try {
+        const productData = req.body;
+        const result = await ProductServices.createProduct(productData);
 
-    // console.log(result)
-    // // data is sending as response from the database to the frontend.
-    // // Here result is the inserted document
-    res.json({
-        success: true,
-        message: "Product created successfully!",
-        data: result,
-    });
-};
-const getAllProducts = async (req: Request, res: Response) => {
-    // const productData = req.body;
-    const result = await ProductServices.getAllProducts();
-
-    // console.log(result)
-    // // data is sending as response from the database to the frontend.
-    // // Here result is the inserted document
-    res.json({
-        success: true,
-        message: "Products fetched successfully!",
-        data: result,
-    });
-};
-const getProductById = async (req: Request, res: Response) => {
-    const id = req.params.productId;
-    console.log(typeof id);
-    const result = await ProductServices.getProductById(id);
-
-    // console.log(result)
-    // // data is sending as response from the database to the frontend.
-    // // Here result is the inserted document
-    res.json({
-        success: true,
-        message: "Products fetched successfully!",
-        data: result,
-    });
-};
-const updateProductById = async (req: Request, res: Response) => {
-    const id = req.params.productId;
-    const updateProduct = req.body;
-    const result = await ProductServices.updateProductById(id, updateProduct);
-
-    // console.log(result)
-    if (!result) {
-        return res.json({ success: false, message: "Product not found" });
+        // console.log(result)
+        if (!result) {
+            return res.json({
+                success: false,
+                message: "Product is not created!",
+                data: result,
+            });
+        }
+        // // data is sending as response from the database to the frontend.
+        // // Here result is the inserted document
+        res.json({
+            success: true,
+            message: "Product created successfully!",
+            data: result,
+        });
+    } catch (error) {
+        console.log("Error ==>", error);
     }
-    // // data is sending as response from the database to the frontend.
-    // // Here result is the inserted document
-    res.json({
-        success: true,
-        message: "Product updated successfully!",
-        data: result,
-    });
+};
+//2
+const getAllProducts = async (req: Request, res: Response) => {
+    try {
+        const result = await ProductServices.getAllProducts();
+
+        const search = req.query.searchTerm;
+
+        console.log(search)
+
+        // console.log(result)
+        if (!result) {
+            return res.json({
+                success: false,
+                message: "Products fetched successfully!",
+                data: result,
+            });
+        }
+        // // data is sending as response from the database to the frontend.
+        // // Here result is the inserted document
+        res.json({
+            success: true,
+            message: "Products fetched successfully!",
+            data: result,
+        });
+    } catch (error) {
+        console.log("Error ==>", error);
+    }
+};
+//3
+const getProductById = async (req: Request, res: Response) => {
+    try {
+        const id = req.params.productId;
+        console.log(typeof id);
+        const result = await ProductServices.getProductById(id);
+
+        // console.log(result)
+        // // data is sending as response from the database to the frontend.
+        // // Here result is the inserted document
+        if (!result) {
+            return res.json({
+                success: false,
+                message: "Product not found",
+                data: result,
+            });
+        }
+        res.json({
+            success: true,
+            message: "Products fetched successfully!",
+            data: result,
+        });
+    } catch (error) {
+        console.log("Error ==>", error);
+    }
+};
+//4
+const updateProductById = async (req: Request, res: Response) => {
+    try {
+        const id = req.params.productId;
+        const updateProduct = req.body;
+        const result = await ProductServices.updateProductById(
+            id,
+            updateProduct
+        );
+
+        // console.log(result)
+        if (!result) {
+            return res.json({ success: false, message: "Product not found" });
+        }
+        // // data is sending as response from the database to the frontend.
+        // // Here result is the inserted document
+        res.json({
+            success: true,
+            message: "Product updated successfully!",
+            data: result,
+        });
+    } catch (error) {
+        console.log("Error ==>", error);
+    }
+};
+//5
+const deleteProductById = async (req: Request, res: Response) => {
+    try {
+        const id = req.params.productId;
+
+        const result = await ProductServices.deleteProductById(id);
+
+        // console.log(result)
+        if (!result) {
+            return res.json({
+                success: false,
+                message: "Product not found",
+                data: null,
+            });
+        }
+        // // data is sending as response from the database to the frontend.
+        // // Here result is the inserted document
+        res.json({
+            success: true,
+            message: "Product deleted successfully!",
+            data: null,
+        });
+    } catch (error) {
+        console.log("Error ==>", error);
+    }
 };
 
 export const ProductControllers = {
@@ -64,4 +137,5 @@ export const ProductControllers = {
     getAllProducts,
     getProductById,
     updateProductById,
+    deleteProductById,
 };

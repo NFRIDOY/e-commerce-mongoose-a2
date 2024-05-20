@@ -39,7 +39,7 @@ const getAllProducts = async (req: Request, res: Response) => {
             result = await ProductServices.getAllProducts();
         }
 
-        console.log(result)
+        // console.log(result)
         if (!result || result.length === 0) {
             return res.json({
                 success: false,
@@ -62,7 +62,7 @@ const getAllProducts = async (req: Request, res: Response) => {
 const getProductById = async (req: Request, res: Response) => {
     try {
         const id = req.params.productId;
-        console.log(typeof id);
+        
         const result = await ProductServices.getProductById(id);
 
         // console.log(result)

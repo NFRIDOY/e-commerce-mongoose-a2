@@ -3,7 +3,7 @@ import { OrderControllers } from "./order.controller";
 
 const router = express.Router();
 
-// router.post("/", OrderControllers.createProduct);
+router.post("/", OrderControllers.createOrder);
 // router.get("/", OrderControllers.getAllProducts);
 // router.get("/:productId", OrderControllers.getProductById);
 // router.put("/:productId", OrderControllers.updateProductById);
@@ -11,4 +11,4 @@ const router = express.Router();
 
 
 
-export const ProductRouters = router;
+export const OrderRouters = router;

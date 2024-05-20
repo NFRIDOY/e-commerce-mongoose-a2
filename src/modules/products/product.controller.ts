@@ -27,8 +27,22 @@ const getAllProducts = async (req: Request, res: Response) => {
         data: result 
     });
 };
+const getProductbyId = async (req: Request, res: Response) => {
+    const id = req.params.productId;
+    const result = await ProductServices.getProductbyId(id);
+
+    // console.log(result)
+    // // data is sending as response from the database to the frontend. 
+    // // Here result is the inserted document
+    res.json({
+        success: true,
+        message: "Products fetched successfully!",
+        data: result 
+    });
+};
 
 export const ProductControllers = {
     createProduct,
-    getAllProducts
+    getAllProducts,
+    getProductbyId
 }

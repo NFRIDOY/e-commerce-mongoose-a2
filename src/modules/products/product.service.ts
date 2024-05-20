@@ -13,6 +13,11 @@ const getProductById = async (id: string) => {
     const result = await Product.findById(id);
     return result;
 };
+const getSearchProducts = async (name: string) => {
+    const regex = new RegExp(name, "i"); // 'i' makes it case insensitive
+    const result = await Product.find({ name: { $regex: regex } });
+    return result;
+};
 const updateProductById = async (id: string, payload: TProduct) => {
     const result = await Product.findByIdAndUpdate(id, payload, {
         new: true, // Return the updated document
@@ -32,5 +37,6 @@ export const ProductServices = {
     getAllProducts,
     getProductById,
     updateProductById,
-    deleteProductById
+    deleteProductById,
+    getSearchProducts,
 };

@@ -29,18 +29,22 @@ const createProduct = async (req: Request, res: Response) => {
 //2
 const getAllProducts = async (req: Request, res: Response) => {
     try {
-        const result = await ProductServices.getAllProducts();
+        const search = req.query.searchTerm as string;
+        // console.log(search);
 
-        const search = req.query.searchTerm;
+        let result;
+        if (search) {
+            result = await ProductServices.getSearchProducts(search);
+        } else {
+            result = await ProductServices.getAllProducts();
+        }
 
-        console.log(search)
-
-        // console.log(result)
+        console.log(result)
         if (!result) {
             return res.json({
                 success: false,
-                message: "Products fetched successfully!",
-                data: result,
+                message: "No products found!",
+                data: [],
             });
         }
         // // data is sending as response from the database to the frontend.

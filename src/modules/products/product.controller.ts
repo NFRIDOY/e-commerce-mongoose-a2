@@ -14,3 +14,7 @@ const createProduct = async (req: Request, res: Response) => {
         data: result 
     });
 };
+
+export const ProductControllers = {
+    createProduct
+}

@@ -25,13 +25,13 @@ const updateProductById = async (id: string, payload: TProduct) => {
     });
     return result;
 };
-const updateStockByProductId = async (id: string) => {
+const updateStockByProductId = async (id: string, quantity: number) => {
     // const result = await Product.findOneAndUpdate(id, {inventory.quantity : 10});
     const resultFind = await Product.findById(id);
     console.log("resultFind =1>", resultFind);
     if (resultFind?.inventory?.inStock) {
         const newQuantity: number | undefined =
-            resultFind?.inventory?.quantity - 1;
+            resultFind?.inventory?.quantity - quantity;
         const newInStock: boolean | undefined = newQuantity <= 0 ? false : true;
 
         const resultUpdate = await Product.updateOne(

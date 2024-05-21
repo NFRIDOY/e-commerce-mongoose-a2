@@ -13,7 +13,7 @@ const createOrder = async (req: Request, res: Response) => {
         
         // Update the product Quantity
         
-        const getProductStock = await ProductServices.updateStockByProductId(OrderData?.productId)
+        const getProductStock = await ProductServices.updateStockByProductId(OrderData?.productId, OrderData?.quantity)
 
         // const updateProductQuantity = await ProductServices.updateProductById()
 

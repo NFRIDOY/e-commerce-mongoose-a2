@@ -109,6 +109,31 @@ const updateProductById = async (req: Request, res: Response) => {
         console.log("Error ==>", error);
     }
 };
+
+const updateStockByProductId = async (req: Request, res: Response) => {
+    try {
+        const id = req.params.productId;
+        const updateProduct = req.body;
+        const result = await ProductServices.updateProductById(
+            id,
+            updateProduct
+        );
+
+        // console.log(result)
+        if (!result) {
+            return res.json({ success: false, message: "Product not found" });
+        }
+        // // data is sending as response from the database to the frontend.
+        // // Here result is the inserted document
+        res.json({
+            success: true,
+            message: "Product updated successfully!",
+            data: result,
+        });
+    } catch (error) {
+        console.log("Error ==>", error);
+    }
+};
 //5
 const deleteProductById = async (req: Request, res: Response) => {
     try {
@@ -142,4 +167,5 @@ export const ProductControllers = {
     getProductById,
     updateProductById,
     deleteProductById,
+    updateStockByProductId
 };

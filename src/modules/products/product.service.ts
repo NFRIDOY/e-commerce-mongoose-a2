@@ -25,6 +25,45 @@ const updateProductById = async (id: string, payload: TProduct) => {
     });
     return result;
 };
+const updateStockByProductId = async (id: string) => {
+    // const result = await Product.findOneAndUpdate(id, {inventory.quantity : 10});
+    const resultFind = await Product.findById(id);
+    console.log("resultFind =1>", resultFind);
+    if (resultFind?.inventory?.inStock) {
+        const newQuantity: number | undefined =
+            resultFind?.inventory?.quantity - 1;
+        const newInStock: boolean | undefined = newQuantity <= 0 ? false : true;
+
+        const resultUpdate = await Product.updateOne(
+            {_id: id},
+            {
+                // $set: {
+                inventory: {
+                    quantity: newQuantity,
+                    inStock: newInStock,
+                },
+                // }
+            }
+        );
+        console.log("resultUpdate =2>", resultUpdate);
+        return resultUpdate;
+    } else if (!resultFind?.inventory?.inStock) {
+        console.log("Stock out");
+    }
+
+    // const result = await Product.findById(id, {
+    //     new: true, // Return the updated document
+    //     runValidators: true, // Validate the update operation
+    // });
+    // result.inventory.quantity = quantity - 1;
+    // const getInStock = result?.inventory?.inStock;
+    // const getQuantity = result?.inventory?.quantity;
+
+    // if (getInStock) {
+    //     const newQuantity = getQuantity as number - quantity;
+    // }
+    // return result;
+};
 
 //5
 const deleteProductById = async (id: string) => {
@@ -39,4 +78,5 @@ export const ProductServices = {
     updateProductById,
     deleteProductById,
     getSearchProducts,
+    updateStockByProductId,
 };

@@ -1,10 +1,31 @@
 import { Request, Response } from "express";
 import { OrderServices } from "./order.service";
+import { ProductServices } from "../products/product.service";
 
 // O1
 const createOrder = async (req: Request, res: Response) => {
     try {
         const OrderData = req.body;
+
+        // Find the product Stock
+
+        // const getProductStock = await ProductServices.getProductById(OrderData?.productId)
+        
+        // Update the product Quantity
+        
+        const getProductStock = await ProductServices.updateStockByProductId(OrderData?.productId)
+
+        // const updateProductQuantity = await ProductServices.updateProductById()
+
+        if (!getProductStock) {
+            return res.json({
+                success: false,
+                message: "Stock Out",
+                data: getProductStock,
+            });
+        }
+
+        // Create Order
         const result = await OrderServices.createOrder(OrderData);
 
         // console.log(result)

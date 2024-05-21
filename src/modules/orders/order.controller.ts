@@ -20,8 +20,7 @@ const createOrder = async (req: Request, res: Response) => {
         if (!getProductStock) {
             return res.json({
                 success: false,
-                message: "Stock Out",
-                data: getProductStock,
+                message: "Insufficient quantity available in inventory",
             });
         }
 

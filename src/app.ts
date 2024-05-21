@@ -10,7 +10,11 @@ app.use("/api/products", ProductRouters);
 app.use("/api/orders", OrderRouters);
 
 app.get("/", (req: Request, res: Response) => {
-  res.send("E-Commerce Mongoose Server is Running");
+    res.send("E-Commerce Mongoose Server is Running");
 });
+
+// app.use((req, res, next) => {
+//     res.send("Not Found");
+// });
 
 export default app;

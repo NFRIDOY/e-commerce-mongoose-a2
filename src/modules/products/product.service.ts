@@ -29,6 +29,7 @@ const updateStockByProductId = async (id: string, quantity: number) => {
     // const result = await Product.findOneAndUpdate(id, {inventory.quantity : 10});
     const resultFind = await Product.findById(id);
     // console.log("resultFind =1>", resultFind);
+
     if (
         resultFind?.inventory?.inStock &&
         resultFind?.inventory?.quantity >= quantity
@@ -52,6 +53,7 @@ const updateStockByProductId = async (id: string, quantity: number) => {
         return resultUpdate;
     } else if (!resultFind?.inventory?.inStock) {
         console.log("Stock out");
+        return null;
     }
 
     // const result = await Product.findById(id, {

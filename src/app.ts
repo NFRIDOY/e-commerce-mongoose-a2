@@ -1,4 +1,4 @@
-import express, { Request, Response } from "express";
+import express, { NextFunction, Request, Response } from "express";
 import { ProductRouters } from "./modules/products/product.route";
 import { OrderRouters } from "./modules/orders/order.route";
 const app = express();
@@ -13,8 +13,21 @@ app.get("/", (req: Request, res: Response) => {
     res.send("E-Commerce Mongoose Server is Running");
 });
 
-// app.use((req, res, next) => {
-//     res.send("Not Found");
-// });
+// "Not Found" middleware
+app.use((req, res, next) => {
+    res.status(404).json({
+        success: false,
+        message: "Route not found",
+    });
+});
+
+// Error-handling middleware
+app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+    console.error(err.stack);
+    res.status(500).json({
+        success: false,
+        message: "Something went wrong!",
+    });
+});
 
 export default app;

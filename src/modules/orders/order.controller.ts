@@ -1,47 +1,93 @@
 import { Request, Response } from "express";
 import { OrderServices } from "./order.service";
 import { ProductServices } from "../products/product.service";
+import mongoose from "mongoose";
+const { ObjectId } = mongoose.Types;
+// import { z } from "zod";
 
 // O1
 const createOrder = async (req: Request, res: Response) => {
     try {
+        // // Validate order using zod
+
+        // const orderValidationSchema = z.object({
+        //     email: z.string(),
+        //     productId: z.string(),
+        //     price: z.number(),
+        //     quantity: z.number()
+        // })
+
         const OrderData = req.body;
 
+        // validate id
+
+        function isValidObjectId(id) {
+            return ObjectId.isValid(id) && String(new ObjectId(id)) === id;
+        }
+
+        if (!isValidObjectId(OrderData?.productId)) {
+            return res.json({
+                success: false,
+                message: "productId is not valid!",
+            });
+        }
         // Find the product Stock
 
-        // const getProductStock = await ProductServices.getProductById(OrderData?.productId)
-        
-        // Update the product Quantity
-        
-        const getProductStock = await ProductServices.updateStockByProductId(OrderData?.productId, OrderData?.quantity)
+        const findProductStock = await ProductServices.getProductById(
+            OrderData?.productId
+        );
 
-        // const updateProductQuantity = await ProductServices.updateProductById()
+        console.log("findProductStock ==1>", findProductStock);
 
-        if (!getProductStock) {
-            return res.json({
-                success: false,
-                message: "Insufficient quantity available in inventory",
-            });
-        }
+        if (findProductStock) {
+            // Update the product Quantity
+            const updateProductStock =
+                await ProductServices.updateStockByProductId(
+                    OrderData?.productId,
+                    OrderData?.quantity
+                );
 
-        // Create Order
-        const result = await OrderServices.createOrder(OrderData);
+            // const updateProductQuantity = await ProductServices.updateProductById()
 
-        // console.log(result)
-        if (!result) {
-            return res.json({
-                success: false,
-                message: "Order is not created!",
+            console.log("updateProductStock ==2>", updateProductStock);
+            // if (!getProductStock) {
+            if (!updateProductStock) {
+                return res.json({
+                    success: false,
+                    message: "Insufficient quantity available in inventory",
+                });
+            }
+            // else if (getProductStock?.length === 0) {
+            //     return res.json({
+            //         success: false,
+            //         message: "Order not found",
+            //     });
+            // }
+
+            // Create Order
+            const result = await OrderServices.createOrder(OrderData);
+
+            // console.log(result)
+            if (!result) {
+                return res.json({
+                    success: false,
+                    message: "Order is not created!",
+                    data: result,
+                });
+            }
+            // // data is sending as response from the database to the frontend.
+            // // Here result is the inserted document
+            res.json({
+                success: true,
+                message: "Order created successfully!",
                 data: result,
             });
+        } else {
+            return res.json({
+                success: false,
+                message: "Order not found",
+            });
         }
-        // // data is sending as response from the database to the frontend.
-        // // Here result is the inserted document
-        res.json({
-            success: true,
-            message: "Order created successfully!",
-            data: result,
-        });
     } catch (error) {
         console.log("Error ==>", error);
     }
@@ -62,7 +108,7 @@ const getAllOrder = async (req: Request, res: Response) => {
         if (!result || result.length === 0) {
             return res.json({
                 success: false,
-                message: "No order found",
+                message: "Order not found",
                 data: [],
             });
         }

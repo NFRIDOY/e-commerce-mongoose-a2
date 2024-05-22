@@ -21,7 +21,7 @@ const createOrder = async (req: Request, res: Response) => {
 
         // validate id
 
-        function isValidObjectId(id) {
+        function isValidObjectId(id: any) {
             return ObjectId.isValid(id) && String(new ObjectId(id)) === id;
         }
 
@@ -37,7 +37,7 @@ const createOrder = async (req: Request, res: Response) => {
             OrderData?.productId
         );
 
-        console.log("findProductStock ==1>", findProductStock);
+        // console.log("findProductStock ==1>", findProductStock);
 
         if (findProductStock) {
             // Update the product Quantity
@@ -49,7 +49,7 @@ const createOrder = async (req: Request, res: Response) => {
 
             // const updateProductQuantity = await ProductServices.updateProductById()
 
-            console.log("updateProductStock ==2>", updateProductStock);
+            // console.log("updateProductStock ==2>", updateProductStock);
             // if (!getProductStock) {
             if (!updateProductStock) {
                 return res.json({
